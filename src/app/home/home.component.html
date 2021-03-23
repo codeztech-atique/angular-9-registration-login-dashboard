@@ -1,7 +1,91 @@
 <div class="p-4">
-    <div class="container">
-        <h1>Hi {{user.firstName}}!</h1>
-        <p>You're logged in with Angular 9!!</p>
-        <p><a routerLink="/users">Manage Users</a></p>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <p><a routerLink="/users">Manage Users</a></p>
+    <h2 class="mt-3">Inline - Create New Product</h2>
+    <p>
+      Table with simple inline editing. Click in Id or Name input filed in order to update the filed
+    </p>
+    <div class="alert alert-info">
+      Please note all the api call will happens after 2 seconds using deboucing concept or else, it will be so costly
+      !!!
     </div>
+    <div class="card mb-5">
+      <div class="row">
+        <div class="col-md-4 login-sec">
+          <!-- <h2 class="text-center">Parking Slot</h2> -->
+          <form class="login-form" [formGroup]="todoForm">
+            <div class="form-group">
+              <label class="text-uppercase">Name *</label>
+              <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+          />
+            </div>
+            <div class="form-group">
+              <label class="text-uppercase">Mobile *</label>
+              <input
+            type="number"
+            class="form-control"
+            formControlName="mobile"
+          />
+            </div>
+            <div class="form-group" style="display:flex">
+
+              <button
+          [disabled]="!todoForm.valid"
+          type="submit"
+          class="btn btn-login float-right" (click)="submitData()"
+        >
+          Submit
+        </button>
+              <div id="success" style="color:green" style="color:green;margin-left: 8%;margin-top: 2%;">Success !!!
+              </div>
+              <div id="error" style="color:green" style="color:red;margin-left: 8%;margin-top: 2%;">Error !!!</div>
+            </div>
+            <!-- min="0"
+            oninput="validity.valid||(value='');" -->
+
+          </form>
+        </div>
+        <div class="col-md-8">
+          <div class="card mb-5">
+            <div class="card-header">Todo</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Trash</th>
+                  </thead>
+                  <!-- <tr *ngFor="let user of tableData">
+                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.id" disabled="$1"></td>
+                    <td *ngIf="user.id !== editRowID" (click)="Edit(user.id)">{{user.id}}</td>
+                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.name" (keyup)="onKey(user.id, user.name, user.mobile)">
+                    </td>
+                    <td *ngIf="user.id !== editRowID" (click)="Edit(user.id)">{{user.name}}</td>
+                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.mobile" (keyup)="onKey(user.id, user.name, user.mobile)">
+                    </td>
+                    <td *ngIf="user.id !== editRowID">{{user.mobile}}</td>
+                    <td *ngIf="user.id !== editRowID">
+                      <button type="button" class="btn btn-sm  btn-danger" (click)="deleteSingleTodoItems(user.id)">Delete</button>
+                    </td>
+                  </tr> -->
+                </table>
+              </div>
+              <div class="text-center">
+
+              </div>
+              <div class="alert alert-info" *ngIf="updatedRow">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
