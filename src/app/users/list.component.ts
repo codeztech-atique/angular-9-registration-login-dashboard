@@ -1,13 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { first } from "rxjs/operators";
 
-import { AccountService } from "../_services";
+import { AccountService, AlertService } from "../_services";
 
 @Component({ templateUrl: "list.component.html" })
 export class ListComponent implements OnInit {
   users = null;
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
     this.accountService
@@ -20,13 +23,17 @@ export class ListComponent implements OnInit {
   }
 
   deleteUser(id: string) {
-    const user = this.users.find(x => x.id === id);
+    const user = this.users.find(x => x._id === id);
     user.isDeleting = true;
     this.accountService
       .delete(id)
       .pipe(first())
       .subscribe(() => {
-        this.users = this.users.filter(x => x.id !== id);
+        this.alertService.clear();
+        this.users = this.users.filter(x => x._id !== id);
+        this.alertService.success("User Delete successful", {
+          keepAfterRouteChange: false
+        });
       });
   }
 }
