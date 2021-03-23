@@ -128,7 +128,8 @@ export class HomeComponent {
     );
   }
   Edit(val) {
-    console.log(val);
+    // console.log(id);
+    // this.user.id = id;
     this.editRowID = val;
   }
 
