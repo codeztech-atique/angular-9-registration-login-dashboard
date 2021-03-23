@@ -1,27 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { first } from "rxjs/operators";
 
-import { AccountService } from '../_services';
+import { AccountService } from "../_services";
 
-@Component({ templateUrl: 'list.component.html' })
+@Component({ templateUrl: "list.component.html" })
 export class ListComponent implements OnInit {
-    users = null;
+  users = null;
 
-    constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService) {}
 
-    ngOnInit() {
-        this.accountService.getAll()
-            .pipe(first())
-            .subscribe(users => this.users = users);
-    }
+  ngOnInit() {
+    this.accountService
+      .getAll()
+      .pipe(first())
+      .subscribe(users => {
+        var res = JSON.parse(JSON.stringify(users));
+        this.users = res.data;
+      });
+  }
 
-    deleteUser(id: string) {
-        const user = this.users.find(x => x.id === id);
-        user.isDeleting = true;
-        this.accountService.delete(id)
-            .pipe(first())
-            .subscribe(() => {
-                this.users = this.users.filter(x => x.id !== id) 
-            });
-    }
+  deleteUser(id: string) {
+    const user = this.users.find(x => x.id === id);
+    user.isDeleting = true;
+    this.accountService
+      .delete(id)
+      .pipe(first())
+      .subscribe(() => {
+        this.users = this.users.filter(x => x.id !== id);
+      });
+  }
 }

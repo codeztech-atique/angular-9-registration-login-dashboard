@@ -22,6 +22,7 @@ export class AddEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.route.snapshot.params);
     this.id = this.route.snapshot.params["id"];
     this.isAddMode = !this.id;
 
@@ -43,11 +44,15 @@ export class AddEditComponent implements OnInit {
       this.accountService
         .getById(this.id)
         .pipe(first())
-        .subscribe(x => {
-          this.f.firstName.setValue(x.firstName);
-          this.f.lastName.setValue(x.lastName);
-          this.f.email.setValue(x.email);
-        });
+        .subscribe(
+          x => {
+            var res = JSON.parse(JSON.stringify(x));
+            this.f.firstName.setValue(res.data.firstName);
+            this.f.lastName.setValue(res.data.lastName);
+            this.f.email.setValue(res.data.email);
+          },
+          err => console.log(err)
+        );
     }
   }
 
