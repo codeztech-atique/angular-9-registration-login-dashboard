@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+simport { Component } from '@angular/core';
 
 import { AccountService } from './_services';
 import { User } from './_models';
