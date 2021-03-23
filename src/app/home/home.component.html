@@ -61,19 +61,19 @@
                     <th>Mobile</th>
                     <th>Trash</th>
                   </thead>
-                  <!-- <tr *ngFor="let user of tableData">
-                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.id" disabled="$1"></td>
+                  <tr *ngFor="let user of tableData">
+                    <td *ngIf="user.id === editRowID"><input type="text"  disabled="$1"></td>
                     <td *ngIf="user.id !== editRowID" (click)="Edit(user.id)">{{user.id}}</td>
-                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.name" (keyup)="onKey(user.id, user.name, user.mobile)">
+                    <td *ngIf="user.id === editRowID"><input type="text"  (keyup)="onKey(user.id, user.name, user.mobile)">
                     </td>
                     <td *ngIf="user.id !== editRowID" (click)="Edit(user.id)">{{user.name}}</td>
-                    <td *ngIf="user.id === editRowID"><input type="text" [(ngModel)]="user.mobile" (keyup)="onKey(user.id, user.name, user.mobile)">
+                    <td *ngIf="user.id === editRowID"><input type="text"  (keyup)="onKey(user.id, user.name, user.mobile)">
                     </td>
                     <td *ngIf="user.id !== editRowID">{{user.mobile}}</td>
                     <td *ngIf="user.id !== editRowID">
                       <button type="button" class="btn btn-sm  btn-danger" (click)="deleteSingleTodoItems(user.id)">Delete</button>
                     </td>
-                  </tr> -->
+                  </tr>
                 </table>
               </div>
               <div class="text-center">

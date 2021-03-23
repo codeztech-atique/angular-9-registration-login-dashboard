@@ -11,6 +11,7 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
+import { SharedService } from './_services/shared.service';
 
 @NgModule({
     imports: [
@@ -29,7 +30,9 @@ import { HomeComponent } from './home';
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
         // provider used to create fake backend
-        fakeBackendProvider
+        fakeBackendProvider,
+
+        SharedService
     ],
     bootstrap: [AppComponent]
 })

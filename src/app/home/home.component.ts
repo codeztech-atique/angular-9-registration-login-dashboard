@@ -1,5 +1,5 @@
 import { User } from "../_models";
-import { AccountService } from "../_services";
+import { AccountService, SharedService } from "../_services";
 import { Component, Output, EventEmitter, ViewChild } from "@angular/core";
 import {
   FormBuilder,
@@ -30,7 +30,8 @@ export class HomeComponent {
   constructor(
     private accountService: AccountService,
     private http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private shared: SharedService
   ) {
     this.user = this.accountService.userValue;
   }
@@ -55,35 +56,31 @@ export class HomeComponent {
   }
   public handleSingleClick() {
     // 2 sec - deboucing time
-    console.log(this.userName, this.userMobile);
-    var dataSet = {
-      name: this.userName,
-      mobile: this.userMobile
-    };
-    // this.shared.createTodos(dataSet).subscribe(
-    //   data => {
-    //     const res = JSON.parse(JSON.stringify(data));
-    //     console.log(res);
-    //     if (res) {
-    //       var filterData = {};
-    //       var parseJson = res.data;
-    //       filterData["name"] = parseJson.name;
-    //       filterData["mobile"] = parseJson.mobile;
-    //       filterData["id"] = parseJson.id;
-    //       var showMessage = <HTMLElement>document.getElementById("success");
-    //       showMessage.style.cursor = "block";
+    console.log(this.todoForm.value);
+    this.shared.createTodos(this.todoForm.value).subscribe(
+      data => {
+        const res = JSON.parse(JSON.stringify(data));
+        console.log(res);
+        if (res) {
+          var filterData = {};
+          var parseJson = res.data;
+          filterData["name"] = parseJson.name;
+          filterData["mobile"] = parseJson.mobile;
+          filterData["id"] = parseJson.id;
+          var showMessage = <HTMLElement>document.getElementById("success");
+          showMessage.style.cursor = "block";
 
-    //       this.ngOnInit();
-    //     }
-    //   },
-    //   error => {
-    //     var showMessage = <HTMLElement>document.getElementById("success");
-    //     showMessage.style.cursor = "none";
-    //     var showErMessage = <HTMLElement>document.getElementById("error");
-    //     showErMessage.style.cursor = "block";
-    //     console.log(error);
-    //   }
-    // );
+          this.ngOnInit();
+        }
+      },
+      error => {
+        var showMessage = <HTMLElement>document.getElementById("success");
+        showMessage.style.cursor = "none";
+        var showErMessage = <HTMLElement>document.getElementById("error");
+        showErMessage.style.cursor = "block";
+        console.log(error);
+      }
+    );
   }
 
   deleteSingleTodoItems(data) {
@@ -91,18 +88,18 @@ export class HomeComponent {
     if (confirm("Are you sure you want to delete this ?")) {
       // Save it!
       console.log(data + " delete items from database.");
-      // this.shared.deleteSingleTodos(data).subscribe(
-      //   data => {
-      //     const res = JSON.parse(JSON.stringify(data));
-      //     if (res) {
-      //       console.log(res);
-      //       this.ngOnInit();
-      //     }
-      //   },
-      //   error => {
-      //     console.log(error);
-      //   }
-      // );
+      this.shared.deleteSingleTodos(data).subscribe(
+        data => {
+          const res = JSON.parse(JSON.stringify(data));
+          if (res) {
+            console.log(res);
+            this.ngOnInit();
+          }
+        },
+        error => {
+          console.log(error);
+        }
+      );
     } else {
       // Do nothing!
       console.log("Thing was not saved to the database.");
@@ -111,26 +108,27 @@ export class HomeComponent {
 
   ngOnInit() {
     this.tableData = [];
-    // this.shared.getAllTodos().subscribe(
-    //   data => {
-    //     const res = JSON.parse(JSON.stringify(data));
-    //     if (res) {
-    //       var parseJson = res.data;
-    //       for (let i = 0; i < parseJson.length; i++) {
-    //         this.tableData.push({
-    //           id: parseJson[i].id,
-    //           name: parseJson[i].name,
-    //           mobile: parseJson[i].mobile
-    //         });
-    //       }
-    //     }
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // );
+    this.shared.getAllTodos().subscribe(
+      data => {
+        const res = JSON.parse(JSON.stringify(data));
+        if (res) {
+          var parseJson = res.data;
+          for (let i = 0; i < parseJson.length; i++) {
+            this.tableData.push({
+              id: parseJson[i].id,
+              name: parseJson[i].name,
+              mobile: parseJson[i].mobile
+            });
+          }
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
   Edit(val) {
+    console.log(val);
     this.editRowID = val;
   }
 
@@ -150,20 +148,20 @@ export class HomeComponent {
       mobile: mobile
     };
     console.log(resD);
-    // this.shared.updateSingleTodos(resD).subscribe(
-    //   data => {
-    //     const res = JSON.parse(JSON.stringify(data));
-    //     if (res) {
-    //       alert(
-    //         "UserId:" + id + "\n" + "Name:" + name + " Successfully Updated !!!"
-    //       );
-    //       this.ngOnInit();
-    //     }
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // );
+    this.shared.updateSingleTodos(resD).subscribe(
+      data => {
+        const res = JSON.parse(JSON.stringify(data));
+        if (res) {
+          alert(
+            "UserId:" + id + "\n" + "Name:" + name + " Successfully Updated !!!"
+          );
+          this.ngOnInit();
+        }
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   public setUpdateTimeout(callback) {
